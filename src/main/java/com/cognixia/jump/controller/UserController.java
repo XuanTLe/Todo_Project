@@ -67,6 +67,7 @@ public class UserController {
 		
 	}
 	
+	// Update username
 	@PutMapping("/users/username")
 	public ResponseEntity<?> updateUsernamebyId(@Valid @RequestBody User user) throws ResourceNotFoundException{
 		Long passedId = user.getId();
@@ -80,6 +81,7 @@ public class UserController {
 		throw new ResourceNotFoundException("User with id = " + passedId + " is not found");
 	}
 	
+	// Update password
 	@PutMapping("/users/password")
 	public ResponseEntity<?> updatePasswordbyId(@Valid @RequestBody User user) throws ResourceNotFoundException{
 		Long passedId = user.getId();
@@ -93,6 +95,7 @@ public class UserController {
 		throw new ResourceNotFoundException("User with id = " + passedId + " is not found");
 	}
 	
+	// Get user by username and password
 	@GetMapping("/users/retrieveUser")
 	public List<User> findByUsernameAndPsw(@PathParam(value = "userName") String userName, @PathParam(value = "password") String password)
 	{
