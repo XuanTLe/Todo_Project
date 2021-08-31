@@ -35,7 +35,7 @@ public class ToDoController {
 	@Autowired
 	UserRepository userRepo;
 	
-	// pull todos for 1 user
+	// Pull all todos for 1 user
 	@GetMapping("/users/{userId}/todos")
 	public List<ToDo> getAllToDosByUserId(@PathVariable (value = "userId") Long userId){
 		return todoRepo.findByUserId(userId);
@@ -55,7 +55,7 @@ public class ToDoController {
 	// Create a new todo for a user
 	@PostMapping("/users/{userId}/todos")
 	public ResponseEntity<ToDo> addTodo(@PathVariable (value = "userId") Long userId,
-										@Valid @RequestBody ToDo todo) throws ResourceNotFoundException{
+					    @Valid @RequestBody ToDo todo) throws ResourceNotFoundException{
 		todo.setId(-1L);
 		if(userRepo.existsById(userId)) {
 			Optional<User> user = userRepo.findById(userId);
@@ -67,6 +67,7 @@ public class ToDoController {
 
 	}
 	
+	// Remove a todo
 	@DeleteMapping("/users/todos/{id}")
 	public ResponseEntity<?> deleteTodo(@PathVariable long id) throws ResourceNotFoundException{
 		if(todoRepo.existsById(id)) {
@@ -81,8 +82,7 @@ public class ToDoController {
 	
 	// Delete all todos for 1 user
 	@DeleteMapping("/users/{userId}/todos")
-	public ResponseEntity<?> deleteAllTodosForAUser(@PathVariable (value = "userId") Long userId) 
-															throws ResourceNotFoundException{
+	public ResponseEntity<?> deleteAllTodosForAUser(@PathVariable (value = "userId") Long userId) throws ResourceNotFoundException{
 		if(userRepo.existsById(userId)) {
 			List<ToDo> todosToRemoved = todoRepo.findByUserId(userId);
 			for(ToDo todo : todosToRemoved) {
@@ -97,8 +97,7 @@ public class ToDoController {
 	
 	// Update all todos as completed for 1 user
 	@PutMapping("/users/{userId}/todos")
-	public ResponseEntity<?> updateAllTodosForAUser(@PathVariable (value = "userId") Long userId
-											)throws ResourceNotFoundException{
+	public ResponseEntity<?> updateAllTodosForAUser(@PathVariable (value = "userId") Long userId) throws ResourceNotFoundException{
 		if(userRepo.existsById(userId)) {
 			List<ToDo> todosToUpdated = todoRepo.findByUserId(userId);
 			for(ToDo todo : todosToUpdated) {
@@ -112,7 +111,7 @@ public class ToDoController {
 		throw new ResourceNotFoundException("User with id = " + userId + " is not found");
 
 }
-	
+	// Update a todo from not completed to completed	
 	@PutMapping("/todos/completed")
 	public ResponseEntity<?> updateCompletedbyId(@Valid @RequestBody ToDo todo) throws ResourceNotFoundException{
 		Long passedId = todo.getId();
@@ -126,6 +125,7 @@ public class ToDoController {
 		throw new ResourceNotFoundException("Todo with id = " + passedId + " is not found");
 	}
 	
+	// Update todo's due date
 	@PutMapping("/todos/dueDate")
 	public ResponseEntity<?> updateDueDatebyId(@Valid @RequestBody ToDo todo) throws ResourceNotFoundException{
 		Long passedId = todo.getId();
